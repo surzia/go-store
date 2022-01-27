@@ -1,0 +1,51 @@
+package stack
+
+import "testing"
+
+var (
+	t1 T = 1
+	t2 T = 2
+	t3 T = 3
+)
+
+func TestStack_Push(t *testing.T) {
+	stack := NewStack()
+	stack.Push(t1)
+	stack.Push(t2)
+	stack.Push(t3)
+
+	first := stack.array[0]
+	last := stack.array[len(stack.array)-1]
+
+	if first != t1 || last != t3 {
+		t.Errorf("wrong order, expected first 1 and last 3 but got %d and %d", t1, t3)
+	}
+}
+
+func TestStack_Pop(t *testing.T) {
+	stack := NewStack()
+	stack.Push(t1)
+	stack.Push(t2)
+	stack.Push(t3)
+
+	stack.Pop()
+	if size := stack.Size(); size != 2 {
+		t.Errorf("wrong count, expected 2 and got %d", size)
+	}
+	stack.Pop()
+	stack.Pop()
+	if size := stack.Size(); size != 0 {
+		t.Errorf("wrong count, expected 0 and got %d", size)
+	}
+}
+
+func TestStack_Size(t *testing.T) {
+	stack := NewStack()
+	stack.Push(t1)
+	stack.Push(t2)
+	stack.Push(t3)
+
+	if size := stack.Size(); size != 3 {
+		t.Errorf("wrong count, expected 3 and got %d", size)
+	}
+}
