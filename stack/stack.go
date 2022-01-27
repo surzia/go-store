@@ -39,3 +39,10 @@ func (s *Stack) Size() int {
 
 	return len(s.array)
 }
+
+func (s *Stack) IsEmpty() bool {
+	s.RLock()
+	defer s.RUnlock()
+
+	return len(s.array) == 0
+}

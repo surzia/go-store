@@ -49,3 +49,16 @@ func TestStack_Size(t *testing.T) {
 		t.Errorf("wrong count, expected 3 and got %d", size)
 	}
 }
+
+func TestStack_IsEmpty(t *testing.T) {
+	stack := NewStack()
+	empty := stack.IsEmpty()
+	if !empty {
+		t.Errorf("wrong status, expected true and got %t", empty)
+	}
+	stack.Push(t1)
+	empty = stack.IsEmpty()
+	if empty {
+		t.Errorf("wrong status, expected false and got %t", empty)
+	}
+}
