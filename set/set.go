@@ -1,6 +1,8 @@
 package set
 
-import "sync"
+import (
+	"sync"
+)
 
 type T int
 
@@ -75,4 +77,78 @@ func (s *Set) Size() int {
 	defer s.RUnlock()
 
 	return len(s.sets)
+}
+
+// Union returns a new set with elements from both
+// the given sets
+func (s *Set) Union(t *Set) *Set {
+	ret := &Set{}
+	ret.sets = make(map[T]bool)
+
+	s.RLock()
+	for i := range s.sets {
+		ret.sets[i] = true
+	}
+	s.RUnlock()
+
+	t.RLock()
+	for i := range t.sets {
+		if _, ok := ret.sets[i]; !ok {
+			ret.sets[i] = true
+		}
+	}
+	t.RUnlock()
+
+	return ret
+}
+
+func (s *Set) Intersection(t *Set) *Set {
+	ret := &Set{}
+	ret.sets = make(map[T]bool)
+
+	s.RLock()
+	t.RLock()
+	defer s.RUnlock()
+	defer t.RUnlock()
+
+	for i := range t.sets {
+		if _, ok := s.sets[i]; ok {
+			ret.sets[i] = true
+		}
+	}
+
+	return ret
+}
+
+func (s *Set) Difference(t *Set) *Set {
+	ret := &Set{}
+	ret.sets = make(map[T]bool)
+
+	s.RLock()
+	t.RLock()
+	defer s.RUnlock()
+	defer t.RUnlock()
+
+	for i := range t.sets {
+		if _, ok := s.sets[i]; !ok {
+			ret.sets[i] = true
+		}
+	}
+
+	return ret
+}
+
+func (s *Set) Subset(t *Set) bool {
+	s.RLock()
+	t.RLock()
+	defer s.RUnlock()
+	defer t.RUnlock()
+
+	for i := range s.sets {
+		if _, ok := t.sets[i]; !ok {
+			return false
+		}
+	}
+
+	return true
 }
