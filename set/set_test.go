@@ -9,9 +9,9 @@ var (
 )
 
 func InitSet(t ...T) *Set {
-	set := &Set{}
+	set := NewSet()
 	for _, i := range t {
-		set.Add(i)
+		set.sets[i] = true
 	}
 	return set
 }
@@ -75,7 +75,7 @@ func TestSet_All(t *testing.T) {
 		t.Errorf("wrong count, expected 2 and got %d", len(items))
 	}
 
-	if items[0] != t1 && items[1] != t2 {
+	if items[0] != t1 || items[1] != t2 {
 		t.Errorf("There should be %d and %d in set!", t1, t2)
 	}
 }

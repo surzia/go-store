@@ -11,6 +11,13 @@ type Set struct {
 	sets map[T]bool
 }
 
+func NewSet() *Set {
+	ret := &Set{}
+	ret.sets = make(map[T]bool)
+
+	return ret
+}
+
 // Add adds a new element to the Set. Returns true if t is not in set.
 func (s *Set) Add(t T) bool {
 	s.Lock()
