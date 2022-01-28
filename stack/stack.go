@@ -1,6 +1,9 @@
 package stack
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type T int
 
@@ -24,12 +27,16 @@ func (s *Stack) Push(t T) {
 }
 
 // Pop removes the top element from the stack
-func (s *Stack) Pop() *T {
+func (s *Stack) Pop() (*T, error) {
+	if s.IsEmpty() {
+		return nil, fmt.Errorf("stack must not be empty")
+	}
+
 	s.Lock()
 	item := s.array[len(s.array)-1]
 	s.array = s.array[0 : len(s.array)-1]
 	s.Unlock()
-	return &item
+	return &item, nil
 }
 
 // Size returns the size of the stack

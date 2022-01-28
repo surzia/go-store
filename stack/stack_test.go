@@ -28,14 +28,19 @@ func TestStack_Pop(t *testing.T) {
 	stack.Push(t2)
 	stack.Push(t3)
 
-	stack.Pop()
+	_, _ = stack.Pop()
 	if size := stack.Size(); size != 2 {
 		t.Errorf("wrong count, expected 2 and got %d", size)
 	}
-	stack.Pop()
-	stack.Pop()
+	_, _ = stack.Pop()
+	_, _ = stack.Pop()
 	if size := stack.Size(); size != 0 {
 		t.Errorf("wrong count, expected 0 and got %d", size)
+	}
+
+	_, err := stack.Pop()
+	if err == nil {
+		t.Errorf("stack must not be empty")
 	}
 }
 
