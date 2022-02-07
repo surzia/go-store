@@ -24,18 +24,22 @@ func TestQueue_Dequeue(t *testing.T) {
 	queue.Enqueue(t1)
 	queue.Enqueue(t2)
 	queue.Enqueue(t3)
-	queue.Dequeue()
-	if size := queue.Size(); size != 2 {
-		t.Errorf("wrong count, expected 2 and got %d", size)
+	_, ret := queue.Dequeue()
+	if *ret != t1 {
+		t.Errorf("wrong result, expected %d and got %d", *ret, t1)
 	}
 
-	queue.Dequeue()
-	queue.Dequeue()
-	if size := queue.Size(); size != 0 {
-		t.Errorf("wrong count, expected 0 and got %d", size)
+	_, _ = queue.Dequeue()
+	_, ret = queue.Dequeue()
+	if *ret != t3 {
+		t.Errorf("wrong result, expected %d and got %d", *ret, t3)
 	}
 
+	err, _ := queue.Dequeue()
 	if !queue.IsEmpty() {
 		t.Errorf("IsEmpty should return true")
+	}
+	if err == nil {
+		t.Errorf("cannot operate dequeue when queue is empty")
 	}
 }

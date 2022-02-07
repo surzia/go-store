@@ -1,6 +1,9 @@
 package queue
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type T int
 
@@ -24,22 +27,32 @@ func (q *Queue) Enqueue(t T) {
 }
 
 // Dequeue removes the start of from the queue
-func (q *Queue) Dequeue() *T {
+func (q *Queue) Dequeue() (error, *T) {
 	q.Lock()
+
+	if len(q.array) == 0 {
+		q.Unlock()
+		return fmt.Errorf("queue is empty"), nil
+	}
 	ret := q.array[0]
 	q.array = q.array[1:len(q.array)]
 	q.Unlock()
 
-	return &ret
+	return nil, &ret
 }
 
 // Front returns the start in the queue, without removing it
-func (q *Queue) Front() *T {
+func (q *Queue) Front() (error, *T) {
 	q.Lock()
+
+	if len(q.array) == 0 {
+		q.Unlock()
+		return fmt.Errorf("queue is empty"), nil
+	}
 	ret := q.array[0]
 	q.Unlock()
 
-	return &ret
+	return nil, &ret
 }
 
 // Size returns the size of the queue
