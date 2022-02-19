@@ -56,3 +56,32 @@ func (g *Graph) Print() {
 
 	fmt.Println(ret)
 }
+
+// Traverse implements the BFS traversing algorithm
+func (g *Graph) Traverse(f func(*Node)) {
+	g.RLock()
+	q := NewNodeQueue()
+	n := g.nodes[0]
+	q.Enqueue(n)
+	visited := make(map[*Node]bool)
+	for {
+		if q.IsEmpty() {
+			break
+		}
+		node, _ := q.Dequeue()
+		visited[node] = true
+		near := g.edges[*node]
+
+		for i := 0; i < len(near); i++ {
+			j := near[i]
+			if !visited[j] {
+				q.Enqueue(j)
+				visited[j] = true
+			}
+		}
+		if f != nil {
+			f(node)
+		}
+	}
+	g.RUnlock()
+}

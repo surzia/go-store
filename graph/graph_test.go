@@ -1,6 +1,9 @@
 package graph
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 var (
 	nA = &Node{"A"}
@@ -33,4 +36,11 @@ func InitGraph() *Graph {
 func TestGraph_Print(t *testing.T) {
 	g := InitGraph()
 	g.Print()
+}
+
+func TestGraph_Traverse(t *testing.T) {
+	g := InitGraph()
+	g.Traverse(func(n *Node) {
+		fmt.Printf("%v\n", n.value)
+	})
 }
