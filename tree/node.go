@@ -2,14 +2,14 @@ package tree
 
 type T int
 
-type Tree struct {
+type Node struct {
 	val   T
-	left  *Tree
-	right *Tree
+	left  *Node
+	right *Node
 }
 
-func NewTree(v T) *Tree {
-	tree := &Tree{val: v}
+func NewTree(v T) *Node {
+	tree := &Node{val: v}
 
 	return tree
 }

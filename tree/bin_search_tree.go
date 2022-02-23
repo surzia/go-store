@@ -7,7 +7,7 @@ import (
 
 type BinSearchTree struct {
 	sync.RWMutex
-	root *Tree
+	root *Node
 }
 
 func NewBinSearchTree() *BinSearchTree {
@@ -30,7 +30,7 @@ func (bst *BinSearchTree) Insert(val T) {
 }
 
 // insert internal function to find the correct place for a node in a tree
-func insert(root, node *Tree) {
+func insert(root, node *Node) {
 	if node.val < root.val {
 		if root.left == nil {
 			root.left = node
@@ -55,7 +55,7 @@ func (bst *BinSearchTree) InOrder(f func(T)) {
 }
 
 // inOrder internal recursive function to traverse in-order
-func inOrder(root *Tree, f func(T)) {
+func inOrder(root *Node, f func(T)) {
 	if root != nil {
 		inOrder(root.left, f)
 		f(root.val)
@@ -72,7 +72,7 @@ func (bst *BinSearchTree) PreOrder(f func(T)) {
 }
 
 // preOrder internal recursive function to traverse pre-order
-func preOrder(root *Tree, f func(T)) {
+func preOrder(root *Node, f func(T)) {
 	if root != nil {
 		f(root.val)
 		inOrder(root.left, f)
@@ -89,7 +89,7 @@ func (bst *BinSearchTree) PostOrder(f func(T)) {
 }
 
 // postOrder internal recursive function to traverse post-order
-func postOrder(root *Tree, f func(T)) {
+func postOrder(root *Node, f func(T)) {
 	if root != nil {
 		inOrder(root.left, f)
 		inOrder(root.right, f)
@@ -140,7 +140,7 @@ func (bst *BinSearchTree) Search(t T) bool {
 }
 
 // search internal recursive function to search t in the tree
-func search(root *Tree, t T) bool {
+func search(root *Node, t T) bool {
 	if root == nil {
 		return false
 	}
@@ -165,7 +165,7 @@ func (bst *BinSearchTree) Remove(t T) {
 }
 
 // remove internal recursive function to remove t
-func remove(root *Tree, t T) {
+func remove(root *Node, t T) {
 	if root == nil {
 		return
 	}
@@ -211,7 +211,7 @@ func (bst *BinSearchTree) Print() {
 	fmt.Println("------------------------------------------------")
 }
 
-func stringify(root *Tree, level int) {
+func stringify(root *Node, level int) {
 	if root != nil {
 		format := ""
 		for i := 0; i < level; i++ {
