@@ -10,7 +10,6 @@ type TrieNode struct {
 
 func NewTrieNode(e string) *TrieNode {
 	ret := make(map[string]*TrieNode)
-	ret[e] = nil
 	return &TrieNode{
 		children: ret,
 		value:    e,
@@ -100,4 +99,19 @@ func deleteNode(cur *TrieNode, word string, index int) bool {
 	}
 
 	return false
+}
+
+// StartsWith returns true if there is a previously inserted string word
+// that has the prefix, and false otherwise.
+func (t *Trie) StartsWith(prefix string) bool {
+	current := t.root
+
+	for i := 0; i < len(prefix); i++ {
+		node, ok := current.children[string(prefix[i])]
+		if !ok {
+			return false
+		}
+		current = node
+	}
+	return true
 }
