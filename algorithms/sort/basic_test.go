@@ -52,3 +52,13 @@ func BenchmarkOptimizedBubbleSort(b *testing.B) {
 		OptimizedBubbleSort(arr)
 	}
 }
+
+func TestQuickSort(t *testing.T) {
+	arr, sorted := InitUnsortedArray(10)
+	QuickSort(arr, 0, len(arr)-1)
+	for i := 0; i < len(arr); i++ {
+		if arr[i] != sorted[i] {
+			t.Errorf("index %d of arr should be %d after sorting, but got %d", i, sorted[i], arr[i])
+		}
+	}
+}
