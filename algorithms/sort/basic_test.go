@@ -62,3 +62,13 @@ func TestQuickSort(t *testing.T) {
 		}
 	}
 }
+
+func TestMergeSort(t *testing.T) {
+	arr, sorted := InitUnsortedArray(10)
+	ret := MergeSort(arr)
+	for i := 0; i < len(ret); i++ {
+		if ret[i] != sorted[i] {
+			t.Errorf("index %d of arr should be %d after sorting, but got %d", i, sorted[i], arr[i])
+		}
+	}
+}
