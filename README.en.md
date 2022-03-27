@@ -25,3 +25,9 @@ Data structures that have been implemented.
 
 An algorithm is an unambiguous specification of how to solve a class of problems. It is a set of rules that precisely
 define a sequence of operations.
+
+Algorithms that have been implemented.
+
+- [binary search](algorithms/search/binary_search.go)
+- [interpolation search](algorithms/search/interpolation_search.go)
+- [sort](algorithms/sort/basic.go)
