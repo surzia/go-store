@@ -87,3 +87,49 @@ func MergeSort(arr []int) []int {
 	}
 	return final
 }
+
+func InsertionSort(arr []int) {
+	for i := 0; i < len(arr); i++ {
+		key := arr[i]
+		j := i - 1
+
+		for j >= 0 && arr[j] > key {
+
+			arr[j+1] = arr[j]
+			j = j - 1
+		}
+		arr[j+1] = key
+	}
+}
+
+func SelectionSort(arr []int) {
+	for i := 0; i < len(arr)-1; i++ {
+		minElementIndex := i
+
+		for j := i + 1; j < len(arr); j++ {
+			if arr[minElementIndex] > arr[j] {
+				minElementIndex = j
+			}
+		}
+
+		if minElementIndex != i {
+			arr[i], arr[minElementIndex] = arr[minElementIndex], arr[i]
+		}
+	}
+}
+
+func ShellSort(arr []int) {
+	for i := len(arr) / 2; i > 0; i /= 2 {
+		for j := i; j < len(arr); j++ {
+			key := arr[j]
+			k := j
+
+			for k >= i && arr[k-i] > key {
+				arr[k] = arr[k-i]
+				k -= i
+			}
+
+			arr[k] = key
+		}
+	}
+}

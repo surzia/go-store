@@ -72,3 +72,33 @@ func TestMergeSort(t *testing.T) {
 		}
 	}
 }
+
+func TestInsertionSort(t *testing.T) {
+	arr, sorted := InitUnsortedArray(10)
+	InsertionSort(arr)
+	for i := 0; i < len(arr); i++ {
+		if arr[i] != sorted[i] {
+			t.Errorf("index %d of arr should be %d after sorting, but got %d", i, sorted[i], arr[i])
+		}
+	}
+}
+
+func TestSelectionSort(t *testing.T) {
+	arr, sorted := InitUnsortedArray(10)
+	SelectionSort(arr)
+	for i := 0; i < len(arr); i++ {
+		if arr[i] != sorted[i] {
+			t.Errorf("index %d of arr should be %d after sorting, but got %d", i, sorted[i], arr[i])
+		}
+	}
+}
+
+func TestShellSort(t *testing.T) {
+	arr, sorted := InitUnsortedArray(10)
+	ShellSort(arr)
+	for i := 0; i < len(arr); i++ {
+		if arr[i] != sorted[i] {
+			t.Errorf("index %d of arr should be %d after sorting, but got %d", i, sorted[i], arr[i])
+		}
+	}
+}
