@@ -20,6 +20,8 @@ Data structures that have been implemented.
 - [graph](collections/graph/graph.go)
 - [binary search tree](collections/tree/bin_search_tree.go)
 - [trie](collections/tree/trie.go)
+- [ring buffer](collections/ringbuffer/ring_buffer.go)
+- [lru cache](collections/cache/lru_cache.go)
 
 ## Algorithms
 
