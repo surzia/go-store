@@ -30,3 +30,8 @@
 - [二分查找](algorithms/search/binary_search.go)
 - [插值查找](algorithms/search/interpolation_search.go)
 - [排序算法](algorithms/sort/basic.go)
+
+## 应用
+
+这里记录了一些有趣的Go实现的应用：
+- [go实现lolcat命令](applications/gololcat/main.go)

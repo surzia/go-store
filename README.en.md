@@ -33,3 +33,7 @@ Algorithms that have been implemented.
 - [binary search](algorithms/search/binary_search.go)
 - [interpolation search](algorithms/search/interpolation_search.go)
 - [sort](algorithms/sort/basic.go)
+
+## Applications
+Some interesting Go implementations are documented here:
+- [lolcat command implemented by go](applications/gololcat/main.go)
