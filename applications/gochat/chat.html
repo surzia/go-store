@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #chatContainer {
+            display: flex;
+        }
+
+        #chatMessages,
+        #onlineUsers {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 300px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        #chatMessages {
+            margin-right: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px;
+        }
+
+        .messageContainer {
+            margin-bottom: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .messageText {
+            margin-left: 10px;
+        }
+
+        .onlineUser {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="usernameInput" placeholder="Enter your username" />
+    <button onclick="connectWebSocket()">Connect</button>
+    <div id="chatContainer">
+        <div>
+            <input type="text" id="messageInput" placeholder="Type a message..." disabled />
+            <button onclick="sendMessage()" disabled>Send</button>
+            <div id="chatMessages"></div>
+        </div>
+        <div>
+            <h3>Online Users</h3>
+            <ul id="onlineUsers"></ul>
+        </div>
+    </div>
+
+    <script>
+        var socket;
+        var username = '';
+
+        function connectWebSocket() {
+            username = document.getElementById("usernameInput").value;
+            if (username) {
+                socket = new WebSocket("ws://localhost:8080/ws?username=" + username);
+
+                socket.onopen = function (event) {
+                    document.getElementById("messageInput").disabled = false;
+                    document.querySelector('button[onclick="sendMessage()"]').disabled = false;
+                };
+
+                socket.onmessage = function (event) {
+                    var data = JSON.parse(event.data);
+                    var chat = document.getElementById("chatMessages");
+                    var onlineUsersList = document.getElementById("onlineUsers");
+
+                    if (data.type === "userlist") {
+                        onlineUsersList.innerHTML = '';
+                        data.users.forEach(function (user) {
+                            var userNode = document.createElement("li");
+                            userNode.classList.add("onlineUser");
+                            userNode.appendChild(document.createTextNode(user));
+                            userNode.onclick = function () {
+                                document.getElementById("messageInput").value = `@${user} `;
+                            };
+                            onlineUsersList.appendChild(userNode);
+                        });
+                    } else if (data.type === "message") {
+                        var messageNode = document.createElement("div");
+                        messageNode.classList.add("messageContainer");
+
+                        var usernameNode = document.createElement("span");
+                        usernameNode.classList.add("username");
+                        usernameNode.appendChild(document.createTextNode(data.username + ": "));
+                        messageNode.appendChild(usernameNode);
+
+                        var messageTextNode = document.createElement("span");
+                        messageTextNode.classList.add("messageText");
+                        messageTextNode.appendChild(document.createTextNode(data.message));
+                        messageNode.appendChild(messageTextNode);
+
+                        chat.appendChild(messageNode);
+                    }
+                };
+            } else {
+                alert('Please enter a username to connect.');
+            }
+        }
+
+        function sendMessage() {
+            var messageInput = document.getElementById("messageInput");
+            var message = messageInput.value;
+            if (message) {
+                var toUser = extractToUser(message);
+                var data = {
+                    type: "message",
+                    username: username,
+                    message: message,
+                    toUser: toUser
+                };
+                socket.send(JSON.stringify(data));
+                messageInput.value = '';
+            } else {
+                alert('Please type a message to send.');
+            }
+        }
+
+        function extractToUser(message) {
+            var atIndex = message.indexOf('@');
+            if (atIndex !== -1) {
+                var spaceIndex = message.indexOf(' ', atIndex);
+                if (spaceIndex !== -1) {
+                    return message.substring(atIndex + 1, spaceIndex);
+                } else {
+                    return message.substring(atIndex + 1);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+
+</html>
